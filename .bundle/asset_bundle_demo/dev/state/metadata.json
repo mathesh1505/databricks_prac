@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "config": {
+    "bundle": {
+      "git": {
+        "bundle_root_path": "."
+      }
+    },
+    "workspace": {
+      "file_path": "/Workspace/Users/matheshofficial87@gmail.com/.bundle/asset_bundle_demo/dev/files"
+    },
+    "resources": {
+      "jobs": {
+        "DLT_Example_Piepline": {
+          "id": "997325778001128",
+          "relative_path": "resources/sample_job.job.yml"
+        }
+      },
+      "pipelines": {
+        "asset_bundle_demo_etl": {
+          "id": "d238b8e8-56fe-4fbf-8768-bf8ccdb7e3cd",
+          "relative_path": "resources/asset_bundle_demo_etl.pipeline.yml"
+        }
+      }
+    },
+    "presets": {
+      "source_linked_deployment": false
+    }
+  },
+  "extra": {}
+}

@@ -1,0 +1,14 @@
+resources:
+  jobs:
+    DLT_Example_Piepline:
+      name: DLT_Example_Piepline
+      email_notifications:
+        on_failure:
+          - matheshofficial87@gmail.com
+      notification_settings:
+        no_alert_for_skipped_runs: true
+      tasks:
+        - task_key: pipeline-task-53584380-86ba-4e15-823b-61b48430f866
+          pipeline_task:
+            pipeline_id: 53584380-86ba-4e15-823b-61b48430f866
+      performance_target: PERFORMANCE_OPTIMIZED
