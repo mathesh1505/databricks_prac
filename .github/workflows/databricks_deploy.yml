@@ -23,14 +23,14 @@ jobs:
       - name: Set Databricks credentials
         env:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
-          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKENS }}
         run: |
           mkdir -p ~/.databricks
           cat <<EOF > ~/.databricks/config.yaml
           profiles:
             prod:
               host: ${DATABRICKS_HOST}
-              token: ${DATABRICKS_TOKEN}
+              token: ${DATABRICKS_TOKENS}
           EOF
 
       # Validate the Asset Bundle
