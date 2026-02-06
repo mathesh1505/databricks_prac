@@ -13,25 +13,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Install Databricks CLI v2
       - name: Install Databricks CLI
         run: |
           curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
-          databricks version
 
-      # Validate the Asset Bundle
       - name: Validate Databricks bundle
-        # This path matches your repo structure: .bundle/asset_bundle_demo
-        working-directory: .bundle/asset_bundle_demo
+        # Updated path to include the 'dev' folder seen in your screenshot
+        working-directory: .bundle/asset_bundle_demo/dev
         env:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
-          # Using 'DATABRICKS_TOKENS' to match your GitHub Secret name
           DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKENS }}
         run: databricks bundle validate --target prod
 
-      # Deploy the Asset Bundle
       - name: Deploy Databricks bundle
-        working-directory: .bundle/asset_bundle_demo
+        working-directory: .bundle/asset_bundle_demo/dev
         env:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKENS }}
