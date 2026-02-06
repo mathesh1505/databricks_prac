@@ -1,4 +1,4 @@
-name: Databricks CI/CD
+name: Deploy Databricks Asset Bundle
 
 on:
   push:
@@ -10,20 +10,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Install Databricks CLI
-      run: pip install databricks-cli
+      # ✅ Install Databricks CLI v2
+      - name: Install Databricks CLI
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
+          databricks version
 
-    # ✅ PASTE YOUR CODE HERE (INSIDE WORKFLOW)
-    - name: Set Databricks credentials
-      run: |
-        echo "DATABRICKS_HOST=${{ secrets.DATABRICKS_HOST }}" >> $GITHUB_ENV
-        echo "DATABRICKS_TOKEN=${{ secrets.DATABRICKS_TOKEN }}" >> $GITHUB_ENV
+      # ✅ Configure authentication (PAT or OAuth)
+      - name: Set Databricks credentials
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+        run: |
+          mkdir -p ~/.databricks
+          cat <<EOF > ~/.databricks/config.yaml
+          profiles:
+            prod:
+              host: ${DATABRICKS_HOST}
+              token: ${DATABRICKS_TOKEN}
+          EOF
 
-    - name: Validate Databricks bundle
-      run: databricks bundle validate --target prod
+      # ✅ Validate bundle
+      - name: Validate Databricks bundle
+        run: databricks bundle validate --target prod
 
-    - name: Deploy Databricks bundle
-      run: databricks bundle deploy --target prod
+      # ✅ Deploy bundle
+      - name: Deploy Databricks bundle
+        run: databricks bundle deploy --target prod
