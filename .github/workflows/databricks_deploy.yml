@@ -35,10 +35,12 @@ jobs:
 
       # Validate the Asset Bundle
       - name: Validate Databricks bundle
-        working-directory: asset_bundle_demo
+        working-directory: asset bundle/asset_bundle_demo
+
         run: databricks bundle validate --target prod
 
       # Deploy the Asset Bundle
       - name: Deploy Databricks bundle
-        working-directory: asset_bundle_demo
+        working-directory: asset bundle/asset_bundle_demo
+
         run: databricks bundle deploy --target prod
