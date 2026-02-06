@@ -19,28 +19,20 @@ jobs:
           curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
           databricks version
 
-      # Configure Databricks authentication (PAT-based)
-      - name: Set Databricks credentials
-        env:
-          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
-          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKENS }}
-        run: |
-          mkdir -p ~/.databricks
-          cat <<EOF > ~/.databricks/config.yaml
-          profiles:
-            prod:
-              host: ${DATABRICKS_HOST}
-              token: ${DATABRICKS_TOKENS}
-          EOF
-
       # Validate the Asset Bundle
       - name: Validate Databricks bundle
-        working-directory: asset bundle/asset_bundle_demo
-
+        # This path matches your repo structure: .bundle/asset_bundle_demo
+        working-directory: .bundle/asset_bundle_demo
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          # Using 'DATABRICKS_TOKENS' to match your GitHub Secret name
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKENS }}
         run: databricks bundle validate --target prod
 
       # Deploy the Asset Bundle
       - name: Deploy Databricks bundle
-        working-directory: asset bundle/asset_bundle_demo
-
+        working-directory: .bundle/asset_bundle_demo
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKENS }}
         run: databricks bundle deploy --target prod
