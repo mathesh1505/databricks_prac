@@ -8,6 +8,8 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    # This links to the 'Environment' you created in GitHub Settings
+    environment: prod 
 
     steps:
       - name: Checkout code
@@ -18,15 +20,15 @@ jobs:
           curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
 
       - name: Validate Databricks bundle
-        # Updated path to include the 'dev' folder seen in your screenshot
-        working-directory: .bundle/asset_bundle_demo/dev
+        # Use the path where your databricks.yml is located
+        working-directory: .bundle/asset_bundle_demo
         env:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKENS }}
         run: databricks bundle validate --target prod
 
       - name: Deploy Databricks bundle
-        working-directory: .bundle/asset_bundle_demo/dev
+        working-directory: .bundle/asset_bundle_demo
         env:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKENS }}
