@@ -13,13 +13,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # ✅ Install Databricks CLI v2
+      # Install Databricks CLI v2
       - name: Install Databricks CLI
         run: |
           curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
           databricks version
 
-      # ✅ Configure authentication (PAT or OAuth)
+      # Configure Databricks authentication (PAT-based)
       - name: Set Databricks credentials
         env:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
@@ -33,10 +33,12 @@ jobs:
               token: ${DATABRICKS_TOKEN}
           EOF
 
-      # ✅ Validate bundle
+      # Validate the Asset Bundle
       - name: Validate Databricks bundle
+        working-directory: asset_bundle_demo
         run: databricks bundle validate --target prod
 
-      # ✅ Deploy bundle
+      # Deploy the Asset Bundle
       - name: Deploy Databricks bundle
+        working-directory: asset_bundle_demo
         run: databricks bundle deploy --target prod
